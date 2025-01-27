@@ -61,10 +61,10 @@ export default function TimelineGrid({ yearCount }: TimelineGridProps) {
 
   return (
     <div className="relative w-full overflow-x-auto">
-      <div className="sticky left-0 w-16 h-full bg-white z-10" /> {/* Year markers background */}
-      <div className="relative min-w-[800px]"> {/* Minimum width to prevent squishing */}
-        <div className="ml-20 grid auto-cols-[20px] grid-flow-col gap-0.5 p-4">
-          {/* Year markers with fixed position */}
+      <div className="sticky left-0 w-16 h-full bg-white z-10" />
+      <div className="relative">
+        <div className="ml-20 p-4">
+          {/* Year markers */}
           <div className="absolute left-0 top-0 bottom-0 w-16 flex flex-col">
             {years.map((year) => (
               <YearMarker 
@@ -76,7 +76,13 @@ export default function TimelineGrid({ yearCount }: TimelineGridProps) {
           </div>
 
           {/* Timeline content */}
-          <div className="relative grid auto-cols-[20px] grid-flow-col gap-0.5">
+          <div 
+            className="grid gap-0.5"
+            style={{
+              gridTemplateColumns: 'repeat(18, minmax(20px, 1fr))',
+              minWidth: '800px'
+            }}
+          >
             {days.map((date, index) => (
               <DayBox key={index} date={date} />
             ))}
