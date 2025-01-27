@@ -32,7 +32,7 @@ export default function TimelineGrid({ yearCount }: TimelineGridProps) {
     days.forEach((date, index) => {
       const currentYear = date.getFullYear();
       if (currentYear !== lastYear) {
-        positions[currentYear] = Math.floor(index / 365);
+        positions[currentYear] = Math.floor(index / 18);
         lastYear = currentYear;
         yearStartIndex = index;
       }
