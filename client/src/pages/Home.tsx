@@ -72,32 +72,36 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="container mx-auto px-4 py-8 space-y-8">
+      <div className="bg-slate-800 mb-8">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-semibold text-white">Timeline Visualization</h1>
+            <div className="flex gap-3">
+              <Button onClick={handleExport} variant="secondary" size="sm">
+                <Download className="w-4 h-4 mr-2" />
+                Export
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="secondary" size="sm">
+                    <Share2 className="w-4 h-4 mr-2" />
+                    Share
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={handleShare}>
+                    Share Timeline
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 pb-8 space-y-8">
         <Card className="border-none shadow-lg">
           <CardContent className="p-6">
-            <div className="flex justify-between items-center mb-8">
-              <h1 className="text-3xl font-semibold text-gray-800">Timeline Visualization</h1>
-              <div className="flex gap-3">
-                <Button onClick={handleExport} variant="outline" size="sm" className="bg-white">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export
-                </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="bg-white">
-                      <Share2 className="w-4 h-4 mr-2" />
-                      Share
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={handleShare}>
-                      Share Timeline
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-
             <div className="max-w-md mb-8">
               <YearInput onSubmit={setYearCount} />
             </div>
