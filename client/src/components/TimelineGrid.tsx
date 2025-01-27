@@ -60,21 +60,35 @@ export default function TimelineGrid({ yearCount }: TimelineGridProps) {
   }, [days]);
 
   return (
-    <div className="w-full overflow-x-auto">
-      <div className="relative ml-20 grid grid-cols-[repeat(auto-fill,minmax(20px,1fr))] gap-0.5 p-4">
-        {years.map((year) => (
-          <YearMarker 
-            key={year} 
-            year={year} 
-            index={yearPositions[year]} 
-          />
-        ))}
-        {days.map((date, index) => (
-          <DayBox key={index} date={date} />
-        ))}
-        {decades.map((year) => (
-          <DecadeMarker key={year} year={year} />
-        ))}
+    <div className="relative w-full overflow-x-auto">
+      <div className="sticky left-0 w-16 h-full bg-white z-10" /> {/* Year markers background */}
+      <div className="relative min-w-[800px]"> {/* Minimum width to prevent squishing */}
+        <div className="ml-20 grid auto-cols-[20px] grid-flow-col gap-0.5 p-4">
+          {/* Year markers with fixed position */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 flex flex-col">
+            {years.map((year) => (
+              <YearMarker 
+                key={year} 
+                year={year} 
+                index={yearPositions[year]} 
+              />
+            ))}
+          </div>
+
+          {/* Timeline content */}
+          <div className="relative grid auto-cols-[20px] grid-flow-col gap-0.5">
+            {days.map((date, index) => (
+              <DayBox key={index} date={date} />
+            ))}
+          </div>
+
+          {/* Decade markers */}
+          <div className="absolute top-0 left-0 right-0">
+            {decades.map((year) => (
+              <DecadeMarker key={year} year={year} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

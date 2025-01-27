@@ -8,9 +8,9 @@ interface YearMarkerProps {
 const YearMarker: FC<YearMarkerProps> = ({ year, index }) => {
   return (
     <div 
-      className="absolute -left-16 text-sm font-medium text-gray-600"
+      className="text-sm font-medium text-gray-600 py-2.5"
       style={{
-        top: `${index * 20}px`
+        transform: `translateY(${index * 20}px)`,
       }}
     >
       {year}
