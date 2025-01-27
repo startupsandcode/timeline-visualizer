@@ -24,10 +24,20 @@ export default function TimelineGrid({ yearCount }: TimelineGridProps) {
     return daysArray;
   }, [yearCount]);
 
-  const years = useMemo(() => {
-    const yearSet = new Set(days.map(date => date.getFullYear()));
-    return Array.from(yearSet).sort((a, b) => a - b);
+  const yearPositions = useMemo(() => {
+    const positions: { [key: number]: number } = {};
+    days.forEach((date, index) => {
+      const year = date.getFullYear();
+      if (!(year in positions)) {
+        positions[year] = Math.floor(index / 365);
+      }
+    });
+    return positions;
   }, [days]);
+
+  const years = useMemo(() => {
+    return Object.keys(yearPositions).map(Number).sort((a, b) => a - b);
+  }, [yearPositions]);
 
   const decades = useMemo(() => {
     const decadeYears = new Set();
@@ -43,8 +53,12 @@ export default function TimelineGrid({ yearCount }: TimelineGridProps) {
   return (
     <div className="w-full overflow-x-auto">
       <div className="relative ml-20 grid grid-cols-[repeat(auto-fill,minmax(20px,1fr))] gap-0.5 p-4">
-        {years.map((year, index) => (
-          <YearMarker key={year} year={year} index={index} />
+        {years.map((year) => (
+          <YearMarker 
+            key={year} 
+            year={year} 
+            index={yearPositions[year]} 
+          />
         ))}
         {days.map((date, index) => (
           <DayBox key={index} date={date} />
