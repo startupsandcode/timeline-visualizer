@@ -1,28 +1,33 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import TimelineGrid from '@/components/TimelineGrid';
 import YearInput from '@/components/YearInput';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
+import html2canvas from 'html2canvas';
 
 export default function Home() {
   const [yearCount, setYearCount] = useState(1);
+  const timelineRef = useRef<HTMLDivElement>(null);
 
-  const handleExport = () => {
-    const data = {
-      yearCount,
-      exportDate: new Date().toISOString(),
-      // Add more timeline data as needed
-    };
+  const handleExport = async () => {
+    if (!timelineRef.current) return;
 
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `timeline-export-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    try {
+      const canvas = await html2canvas(timelineRef.current, {
+        scale: 2, // Higher quality
+        backgroundColor: '#ffffff',
+      });
+
+      const image = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = `timeline-${new Date().toISOString().split('T')[0]}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error generating timeline image:', error);
+    }
   };
 
   return (
@@ -39,7 +44,9 @@ export default function Home() {
         <YearInput onSubmit={setYearCount} />
       </div>
 
-      <TimelineGrid yearCount={yearCount} />
+      <div ref={timelineRef}>
+        <TimelineGrid yearCount={yearCount} />
+      </div>
     </div>
   );
 }
