@@ -26,11 +26,21 @@ export default function TimelineGrid({ yearCount }: TimelineGridProps) {
 
   const yearPositions = useMemo(() => {
     const positions: { [key: number]: number } = {};
+    let lastYear = days[0].getFullYear();
+    let yearStartIndex = 0;
+
     days.forEach((date, index) => {
-      const year = date.getFullYear();
-      // Update position every time we see this year, so we get the last position
-      positions[year] = Math.floor(index / 365);
+      const currentYear = date.getFullYear();
+      if (currentYear !== lastYear) {
+        positions[currentYear] = Math.floor(index / 365);
+        lastYear = currentYear;
+        yearStartIndex = index;
+      }
     });
+
+    // Add the first year
+    positions[days[0].getFullYear()] = 0;
+
     return positions;
   }, [days]);
 
